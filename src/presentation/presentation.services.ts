@@ -6,6 +6,8 @@ import { PictureService } from "/pictires/Pictures.service";
 import { AiService } from "/ai/ai.service";
 import { randomUUID } from "crypto";
 import { PictureStorageService } from "/storage/pictureStorage.services";
+import { AwsService } from "aws/aws.service";
+import * as fs from "fs/promises"  
 
 @Injectable()
 export class PresentationServices {
@@ -13,7 +15,10 @@ export class PresentationServices {
     @Inject("AUTOMIZER") private readonly automizer: any,
     private readonly pictureService: PictureService,
     private readonly aiService: AiService,
-    private readonly pictureStorageService: PictureStorageService)   {} 
+    private readonly pictureStorageService: PictureStorageService,
+    private readonly awsService: AwsService,
+)   {} 
+     private readonly presDownloadDir: string = path.join(process.cwd(), "src/temp/pres")
      
     async create(createData: CreatePresentationDto) {
         
@@ -23,27 +28,42 @@ export class PresentationServices {
             createData.providerName,
             createData.modelName
         )
+         const safeTitle = this.safeFileName(presData.slides[0].title || "presentation")
+        const presentationName = `${safeTitle}_${randomUUID()}`
+        this.pictureStorageService.createPresentationFolder(presentationName)
 
-        const picturesNames =await this.pictureService.create(presData.slides)
+
+        const fileName = `${presentationName}.pptx`
+        try{
+             const picturesNames =await this.pictureService.create(presData.slides, presentationName)
         const pres = this.automizer  
         .loadRoot("Presentation1.pptx")
-        .loadMedia(picturesNames, path.join(process.cwd(), "src/temp/images"))
+        .loadMedia(picturesNames, path.join(process.cwd(), `src/temp/images/${presentationName}`))
         .load(`${createData.style}.pptx`, "root")
         
         for (let slide of presData.slides)
         {
             await this.slideServices.create(slide, pres)
         }  
-        
-        const safeTitle = this.safeFileName(presData.slides[0].title || "presentation")
-        const fileName = `${safeTitle}_${randomUUID()}.pptx` 
 
-        await pres.write(fileName); 
-        await this.pictureStorageService.cleanPictures()
+         
 
-        return fileName
+        await pres.write(fileName)
+        const presUrl = await this.awsService.aploadFile(this.presDownloadDir,fileName)
+        return presUrl
         
-        
+        }finally{
+             await this.pictureStorageService.cleanPictures(presentationName)
+            //  await this.cleanPresentation(fileName)
+        }
+    }
+ 
+     private async cleanPresentation(fileName: string){
+
+        fs.rm(path.join(this.presDownloadDir, fileName), {
+            force: true,
+            recursive: true
+        })
     }
 
     private safeFileName(name: string){

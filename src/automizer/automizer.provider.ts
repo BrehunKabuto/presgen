@@ -8,7 +8,7 @@ export const AutomizerProvider = {
         return new Automizer({
            templateDir: path.join(process.cwd(), "src/automizer/templates"),
            mediaDir: path.join(process.cwd(), "src/temp/images"),
-           outputDir: path.join(process.cwd(), "src/automizer/output"),
+           outputDir: path.join(process.cwd(), "src/temp/pres"),
             autoImportSlideMasters: true,
               removeExistingSlides: false,
         })

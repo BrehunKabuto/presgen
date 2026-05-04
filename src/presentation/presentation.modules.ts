@@ -6,9 +6,10 @@ import { AutomizerModule } from "/automizer/automizer.model"
 import { PictureModule } from "/pictires/pictures.module"
 import { AiModule } from "/ai/ai.module"
 import { PictureStorageModule } from "/storage/storage.modules"
+import { AwsModule } from "aws/aws.module"
 
 @Module({
-    imports: [SlideModule, AutomizerModule, PictureModule, AiModule, PictureStorageModule],
+    imports: [SlideModule, AutomizerModule, PictureModule, AiModule, PictureStorageModule, AwsModule],
     controllers: [PresentationController],
     providers: [PresentationServices],
 }) 

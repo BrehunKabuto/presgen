@@ -10,6 +10,7 @@ import { UserModule } from 'user/user.module';
 import { AuthModule } from 'auth/auth.modules';
 import { PrismaModule } from 'prisma/prisma.module';
 import { TokenModule } from 'token/token.module';
+import { AwsModule } from 'aws/aws.module';
 
 
 
@@ -23,7 +24,8 @@ import { TokenModule } from 'token/token.module';
         UserModule,
         AuthModule,
         PrismaModule,
-        TokenModule
+        TokenModule,
+        AwsModule
     ],
     providers: [
         {

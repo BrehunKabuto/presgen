@@ -1,8 +1,10 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 
 import { CreatePresentationDto } from "./dto/createPresentation.dto";
 import { PresentationServices } from "./presentation.services";
+import { AuthGuard } from "@nestjs/passport";
 
+@UseGuards(AuthGuard("jwt"))
 @Controller("presentation")
 export class PresentationController {
     constructor(private readonly presentationServices: PresentationServices) {}

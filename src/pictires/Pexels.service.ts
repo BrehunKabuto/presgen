@@ -19,25 +19,19 @@ export class PexelsPhotoServices{
         this.client = createClient(key)
     }
 
-    async searchPhoto(query?: string ){
-    if (!query){
-        throw new BadRequestException("query for photo is required")
-    }
+    async searchAndDownloadPhoto( presentationName: string ,query?: string){
+    if (!query) throw new BadRequestException("query for photo is required")
 
     
        const result =await this.client.photos.search({query})
        
-       if(!("photos" in result)){
-        throw new NotFoundException("Pexel API error")
-       }
+       if(!("photos" in result)) throw new NotFoundException("Pexel API error")
        
-       if(!result.photos.length){
-        throw new NotFoundException(`No photos found for ${query} query`)
-       }
+       if(!result.photos.length) throw new NotFoundException(`No photos found for ${query} query`)
        
        const selectedPhoto = result.photos[randomInt(result.photos.length)]
        const PhotoName = this.getFileName(selectedPhoto.src.original)
-       await this.downloadPictureService.downloadFile(selectedPhoto.src.original, PhotoName)
+       await this.downloadPictureService.downloadFile(selectedPhoto.src.original, PhotoName, presentationName)
        return PhotoName
       
     }
