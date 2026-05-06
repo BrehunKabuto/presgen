@@ -15,7 +15,7 @@ export class AwsService {
                 secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
             }
         })
-    async aploadFile(filePath: string,fileName: string): Promise<string>{
+    async uploadFile(filePath: string,fileName: string): Promise<string>{
 
         const fileContent = await readFile(path.join(filePath, fileName))
         try{

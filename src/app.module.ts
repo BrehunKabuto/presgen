@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { SlideModule } from './slides/slides.modules';
 import { AutomizerModule } from './automizer/automizer.model';
 import { PresentatiionModules } from './presentation/presentation.modules';
-import { PictureStorageModule } from './storage/storage.modules';
+import { StorageModule } from './storage/storage.modules';
 import { PictureModule } from './pictires/pictures.module';
 import { CatchEverythingFilter } from './common/filters/catchEverithing.filter';
 import { APP_FILTER } from '@nestjs/core';
@@ -19,7 +19,7 @@ import { AwsModule } from 'aws/aws.module';
         SlideModule,
         AutomizerModule,
         PresentatiionModules,
-        PictureStorageModule,
+        StorageModule,
         PictureModule,
         UserModule,
         AuthModule,

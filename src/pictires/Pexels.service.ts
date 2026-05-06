@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { error } from "console"
 import { randomInt } from "crypto"
 import { createClient } from "pexels"
-import { PictureStorageService } from "/storage/pictureStorage.services"
+import { PictureStorage } from "/storage/pictureStorage.services"
 
 
 @Injectable()
@@ -10,7 +10,7 @@ export class PexelsPhotoServices{
 
     
     private client
-    constructor(private readonly downloadPictureService: PictureStorageService ){
+    constructor(private readonly downloadPictureService: PictureStorage ){
 
         const key = process.env.PEXELS_API_KEY
         if(typeof key === 'undefined' ){

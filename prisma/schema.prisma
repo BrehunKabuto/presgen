@@ -19,6 +19,7 @@ model User {
   name String
   hashPassword String
   refreshTokens RefreshToken[]
+  presentations Presentation[]
 }
 
 
@@ -32,4 +33,15 @@ model RefreshToken{
   createAt DateTime @default(now())
   user User  @relation(fields: [userId], references: [id])
 
+}
+
+model Presentation{
+
+  id Int @id @default(autoincrement())
+  userId Int
+  name String
+  user User @relation(fields: [userId], references: [id])
+  url String @unique
+  createAt DateTime @default(now())
+  
 }

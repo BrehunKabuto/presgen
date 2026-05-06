@@ -53,6 +53,12 @@ export class TokenService{
         })
     }
 
+    verifyAccess(token: string){
+        return this.jwt.verify(token,{
+            secret: process.env.ACCESS_SECRET
+        })
+    }
+
 
     async rotateRefreshToken(incomingToken: string){
 

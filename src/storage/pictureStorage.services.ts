@@ -6,7 +6,7 @@ import {  rm } from "fs/promises"
 
 
 @Injectable()
-export class PictureStorageService {
+export class PictureStorage {
 
     private readonly downloadDir: string = `${process.cwd()}/src/temp/images`
     async downloadFile(url: string, FileName: string, presentationFolder: string) {

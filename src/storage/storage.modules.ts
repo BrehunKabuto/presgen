@@ -1,9 +1,12 @@
 import { Module } from "@nestjs/common";
-import { PictureStorageService } from "./pictureStorage.services";
+import { PictureStorage } from "./pictureStorage.services";
+import { PrismaModule } from "prisma/prisma.module";
+import { PresentationStorage } from "./presentationStorage.services";
 
 @Module({
 
-    providers: [PictureStorageService],
-    exports: [PictureStorageService]
+    providers: [PictureStorage, PresentationStorage],
+    exports: [PictureStorage, PresentationStorage],
+    imports: [PrismaModule]
 })
-export class PictureStorageModule{}
+export class StorageModule{}
