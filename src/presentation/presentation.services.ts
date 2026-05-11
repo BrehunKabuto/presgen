@@ -68,8 +68,8 @@ export class PresentationServices {
     
     private async save(fileName: string, userId: number, presentationName: string){
         const presUrl = await this.awsService.uploadFile(this.presDownloadDir,fileName)
-        await this.presentationStorage.create(userId, presUrl, presentationName)
-        return presUrl
+        const presentation =  await this.presentationStorage.create(userId, presUrl, presentationName)
+        return presentation
     }
 
     private safeFileName(name: string){

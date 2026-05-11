@@ -12,10 +12,18 @@ export class PresentationStorage{
 
         try{
 
-            await this.prisma.presentation.create({data:{
+           const presentation = await this.prisma.presentation.create({data:{
                      userId, url, name
-             }
+             },
+              select: {
+                    url: true,
+                    createAt: true,
+                    name: true,
+                    id: true
+                }
+             
           })
+          return presentation
         }
         catch(e){
             console.error("Prisma error:", e)
