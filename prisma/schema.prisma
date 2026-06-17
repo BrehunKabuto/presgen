@@ -27,7 +27,7 @@ model RefreshToken{
 
   id Int @id @default(autoincrement())
   userId Int
-  hashedToken  String @unique
+  hashedToken  String 
   familyId String
   revokeAt DateTime?
   createAt DateTime @default(now())
@@ -39,9 +39,9 @@ model Presentation{
 
   id Int @id @default(autoincrement())
   userId Int
-  name String
+  name String 
   user User @relation(fields: [userId], references: [id])
   url String @unique
   createAt DateTime @default(now())
-  
+   
 }

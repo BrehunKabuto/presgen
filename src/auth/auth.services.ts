@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 import { TokenService } from "token/token.service";
 import { CreateUserDto } from "user/dto/user.dto";
 import { UserService } from "user/user.service";
+import { loginDto } from "./dto/login.dto";
 
 @Injectable()
 export class AuthServices{
@@ -41,6 +42,7 @@ export class AuthServices{
         if(!user) throw new UnauthorizedException("cant register")
         return this.issueToken(user.id)
     }
+
    
 
     async refresh(incomingToken: string){  
@@ -56,7 +58,7 @@ export class AuthServices{
 
     }
 
-    async login(userData: CreateUserDto){
+    async login(userData: loginDto){
 
         const user = await this.userServices.findByEmail(userData.email)
         if (!user) throw new UnauthorizedException("user dont found")

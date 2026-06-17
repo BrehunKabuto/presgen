@@ -1,15 +1,17 @@
 import * as argon2 from "argon2";
 
-import { ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { CreateUserDto } from "./dto/user.dto";
 import { PrismaService } from "prisma/prisma.service";
 import { Prisma } from "@prisma/client";
+import { PresentationStorage } from "storage/presentationStorage.services";
 
 @Injectable()
 export class UserService{
 
     constructor(
-        private readonly prisma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly presStorage: PresentationStorage
     ){}
 
     async create(userData:CreateUserDto){
@@ -36,6 +38,36 @@ export class UserService{
     }
     async findByEmail(email:string){
         return this.prisma.user.findUnique({where: {email} })
+    }
+
+    async findById(id: number){
+        return await this.prisma.user.findUnique(
+            {
+                where: {id},
+                select:{
+                    id: true,
+                    name: true,
+                     email: true,
+                }
+            }
+        )
+    }
+
+    async deleteById(id: number){
+
+        try{
+            await this.prisma.user.delete(
+                {
+                    where: {id}
+                }
+            )
+            this.presStorage.deleteManybyUserId(id)
+
+        }
+        catch(e){
+            throw new InternalServerErrorException((e as any).message)
+        }
+
     }
 
    async getHashPassword(password: string){

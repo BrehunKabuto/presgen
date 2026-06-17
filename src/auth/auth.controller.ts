@@ -1,8 +1,9 @@
-import { Body, Controller, Post, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { CreateUserDto } from "user/dto/user.dto";
 import { AuthServices } from "./auth.services";
 import type { Request, Response } from "express";
 import { AuthGuard } from "@nestjs/passport";
+import { loginDto } from "./dto/login.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -16,7 +17,7 @@ export class AuthController {
 
     }
     @Post("login")
-    async login(@Res({passthrough: true}) res: Response,@Body() data: CreateUserDto){
+    async login(@Res({passthrough: true}) res: Response,@Body() data: loginDto){
 
         const {refreshToken, accessToken} = await this.authServices.login(data)
 
@@ -30,13 +31,14 @@ export class AuthController {
     ){
         
         const token = req.cookies?.["refreshToken"]
-        
         if(!token) throw new UnauthorizedException("No refresh token")
         const {refreshToken, accessToken} = await this.authServices.refresh(token)
         
         return this.sendTokens(res, refreshToken, accessToken)
         
     }
+
+   
     private async sendTokens(
         res: Response,
          refreshToken: string,
@@ -45,8 +47,8 @@ export class AuthController {
 
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            secure: false,
+            sameSite: "lax",
             maxAge: 30 * 24 * 60 * 60 *1000
         })
 

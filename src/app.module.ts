@@ -11,6 +11,7 @@ import { AuthModule } from 'auth/auth.modules';
 import { PrismaModule } from 'prisma/prisma.module';
 import { TokenModule } from 'token/token.module';
 import { AwsModule } from 'aws/aws.module';
+import { UserController } from 'user/user.controller';
 
 
 
@@ -32,6 +33,7 @@ import { AwsModule } from 'aws/aws.module';
             provide: APP_FILTER,
             useClass: CatchEverythingFilter
         }
-    ]
+    ],
+    controllers: [UserController]
 })
 export class AppModule {}

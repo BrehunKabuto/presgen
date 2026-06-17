@@ -1,4 +1,5 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { AwsService } from "aws/aws.service";
 import { PrismaService } from "prisma/prisma.service";
 
 @Injectable()
@@ -6,7 +7,8 @@ export class PresentationStorage{
 
 
     constructor(
-        private readonly prisma:PrismaService
+        private readonly prisma:PrismaService,
+        private readonly aws:AwsService
     ){}
     async create(userId: number, url: string,name: string){
 
@@ -73,14 +75,40 @@ export class PresentationStorage{
 
     async delete(userId: number, id: number ){
 
-       try{ await this.prisma.presentation.delete({
+       try{
+        const presentation =  await this.prisma.presentation.delete({
             where: {id, userId}
         })
+        const presentationName = presentation.url.split("/").pop()
+        await this.aws.deleteFile(presentationName!)
 
         return {message: "Deleted successfully"}
         }
         catch(e){
 
+            throw new InternalServerErrorException("Failed to delete presentation")
+        }
+    }
+
+    async deleteManybyUserId(userId: number){
+        try{
+
+            const presentations = await this.prisma.presentation.findMany({
+                where: {userId},
+                select: {
+                    url: true
+                }
+            })
+
+            const keys = presentations.map((key) => key.url.split("/").pop()!)
+            await this.aws.deleteManyFiles(keys)
+
+            await this.prisma.presentation.deleteMany({
+                where: {userId}
+            })
+            
+        }
+        catch(e){
             throw new InternalServerErrorException("Failed to delete presentation")
         }
     }

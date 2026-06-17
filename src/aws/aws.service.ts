@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
-import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3"
+import {DeleteObjectCommand, DeleteObjectsCommand, PutObjectCommand, S3Client} from "@aws-sdk/client-s3"
 import { readFile } from "fs/promises";
 import path from "path";
 
@@ -15,6 +15,7 @@ export class AwsService {
                 secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
             }
         })
+
     async uploadFile(filePath: string,fileName: string): Promise<string>{
 
         const fileContent = await readFile(path.join(filePath, fileName))
@@ -35,5 +36,37 @@ export class AwsService {
             throw new InternalServerErrorException((e as any).message)
         }
       
+    }
+
+    async deleteFile(key: string): Promise<void>{
+        try{
+
+            await this.client.send(
+                new DeleteObjectCommand({
+                    Bucket: process.env.BUCKET_NAME!,
+                    Key: key
+                })
+            )
+        }catch(e){
+             throw new InternalServerErrorException((e as any).message)
+        }
+    }
+
+    async deleteManyFiles(keys: string[]): Promise<void>{
+
+        try{
+
+            await this.client.send(
+                new DeleteObjectsCommand({
+                    Bucket: process.env.BUCKET_NAME!,
+                    Delete: {
+                        Objects: keys.map((key) => ({Key: key}))
+                    }
+                })
+            )
+        }
+        catch(e){
+            throw new InternalServerErrorException((e as any).message)
+        }
     }
 }

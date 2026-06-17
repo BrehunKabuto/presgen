@@ -32,7 +32,7 @@ export class PresentationController {
         return await this.presetationStorage.getById((req as any).user.userId, parseInt(id))
     }
 
-    @Delete("delete")
+    @Delete(":id")
     async delete(@Req() req: Request, @Param("id") id: string ): Promise<any> {
 
         return await this.presetationStorage.delete((req as any).user.userId, parseInt(id))
