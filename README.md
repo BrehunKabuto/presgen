@@ -1,98 +1,134 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Presentation Generator
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+AI-powered PowerPoint presentation generator with email verification, cloud storage, and customizable styles.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+##  Features
 
-## Description
+- The application uses the OpenAI API to generate JSON data, which is then converted into a presentation.
+- Email registration with OTP verification using Nodemailer.
+- JWT authentication (access + refresh tokens)
+-  File storage in Cloudflare R2 (AWS S3 compatible)
+-  Image support via Pexels API
+-  Multiple presentation styles with ability to add custom ones
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+##  Tech Stack
 
-## Project setup
+**Backend:** NestJS, PostgreSQL, Prisma, Nodemailer  
+**Frontend:** React, TypeScript, Tailwind CSS v4  
+**AI:** OpenAI API  
+**Storage:** Cloudflare R2  
+**Images:** Pexels API  
+
+##  Getting Started
+
+### 1. Clone the repository
 
 ```bash
-$ pnpm install
+git clone https://github.com/BrehunKabuto/presgen.git
+cd your-repo
 ```
 
-## Compile and run the project
+### 2. Install dependencies
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm install
 ```
 
-## Run tests
+### 3. Configure environment variables
+
+Copy `.env.example` to `.env` and fill in the values:
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
+| Variable | Description |
+|---|---|
+| `PORT` | Backend port (default: 3000) |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `JWT_SECRET` | Secret for JWT signing |
+| `ACCESS_SECRET` | Secret for access tokens |
+| `REFRESH_SECRET` | Secret for refresh tokens |
+| `OPENAI_API_KEY` | OpenAI API key → [platform.openai.com](https://platform.openai.com) |
+| `PEXELS_API_KEY` | Pexels API key → [pexels.com/api](https://www.pexels.com/api/) |
+| `AWS_ACCOUNT_ENDPOINT` | Cloudflare R2 endpoint |
+| `AWS_ACCESS_KEY` | R2 access key |
+| `AWS_SECRET_ACCESS_KEY` | R2 secret key |
+| `BUCKET_NAME` | R2 bucket name |
+| `PUBLIC_ACCESS_KEY` | R2 public URL |
+| `MAIL_USER` | Gmail address for sending emails |
+| `MAIL_PASS` | Gmail app password |
+| `FRONTEND_URL` | Frontend URL (e.g. http://localhost:5173) |
+| `NODE_ENV` | `development` or `production` |
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 4. Run migrations
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+npx prisma migrate dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 5. Start the app
 
-## Resources
+```bash
+pnpm start:dev
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+##  Adding Custom Styles
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Copy the base template from `src/automizer/templates/`
+Make your changes
+rename file 
+**Important:** Do not rename or delete existing elements in the template
 
-## Support
+##  API
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Create Presentation
 
-## Stay in touch
+**POST** `/presentation/generate`
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+> Requires authorization (Bearer token)
+
+**Body:**
+
+| Field | Type  | Description |
+|---|---|---|
+| `slideCount` | number  | Number of slides |
+| `userPrompt` | string  | Topic or description |
+| `providerName` | string  | AI provider (e.g. `OpenAI`) |
+| `modelName` | string  | Specific model (e.g. `gpt-4o`) |
+| `style` | string  | Presentation style name |
+
+**Example:**
+
+```json
+{
+  "slideCount": 10,
+  "userPrompt": "Introduction to Machine Learning",
+  "providerName": "OpenAI",
+  "modelName": "gpt-4o",
+  "style": "dark"
+}
+```
+## Docker
+
+### Run with Docker Compose
+
+1. Copy `.env.example` to `.env` and fill in the values
+2. Change `DATABASE_URL` to:
+```env
+   DATABASE_URL="postgresql://postgres:postgres@postgres:5432/mydb"
+```
+3. Start:
+```bash
+   docker-compose up --build
+```
+4. Run migrations:
+```bash
+   docker-compose exec backend npx prisma migrate deploy
+```
+
+App will be available at `http://localhost:3000`
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT © BrehunKabuto
