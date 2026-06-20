@@ -4,18 +4,25 @@ import { AuthServices } from "./auth.services";
 import type { Request, Response } from "express";
 import { AuthGuard } from "@nestjs/passport";
 import { loginDto } from "./dto/login.dto";
+import { VerifyDto } from "./dto/Verify.dto";
 
 @Controller("auth")
 export class AuthController {
     constructor(private readonly authServices: AuthServices){}
 
     @Post("register")
-    async register(@Res({passthrough: true}) res: Response,@Body() data: CreateUserDto): Promise<any>{
+    async register(@Body() data: CreateUserDto): Promise<any>{
         
-        const {refreshToken, accessToken} = await this.authServices.register(data)
-        return this.sendTokens(res, refreshToken, accessToken)
-
+        return await this.authServices.register(data)
+        
     }
+
+    @Post("verifyCode")
+    async verifyCode(@Res({passthrough: true}) res: Response, @Body() data: VerifyDto){
+        const {refreshToken, accessToken} = await this.authServices.verifyCode(data)
+        return this.sendTokens(res, refreshToken, accessToken)
+    }
+    
     @Post("login")
     async login(@Res({passthrough: true}) res: Response,@Body() data: loginDto){
 

@@ -12,6 +12,9 @@ import { PrismaModule } from 'prisma/prisma.module';
 import { TokenModule } from 'token/token.module';
 import { AwsModule } from 'aws/aws.module';
 import { UserController } from 'user/user.controller';
+import { MailModule } from 'mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CleanupModule } from 'cleanup/cleanup.module';
 
 
 
@@ -26,7 +29,10 @@ import { UserController } from 'user/user.controller';
         AuthModule,
         PrismaModule,
         TokenModule,
-        AwsModule
+        AwsModule,
+        MailModule,
+        CleanupModule,
+        ScheduleModule.forRoot()
     ],
     providers: [
         {

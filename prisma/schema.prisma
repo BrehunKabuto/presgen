@@ -17,6 +17,7 @@ model User {
   id  Int @id @default(autoincrement())
   email String @unique
   name String
+  isVerified Boolean @default(false)
   hashPassword String
   refreshTokens RefreshToken[]
   presentations Presentation[]
@@ -27,7 +28,7 @@ model RefreshToken{
 
   id Int @id @default(autoincrement())
   userId Int
-  hashedToken  String 
+  hashedToken  String @unique
   familyId String
   revokeAt DateTime?
   createAt DateTime @default(now())
@@ -44,4 +45,13 @@ model Presentation{
   url String @unique
   createAt DateTime @default(now())
    
+}
+
+model VerificationCode{
+
+  id Int @id @default(autoincrement()) 
+  email String
+  code String
+  expiresAt DateTime 
+  createAt DateTime @default(now())
 }
