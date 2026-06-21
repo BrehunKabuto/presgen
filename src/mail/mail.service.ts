@@ -15,7 +15,7 @@ export class MailService {
         await this.client.transactionalEmails.sendTransacEmail({
             sender: {email:process.env.MAIL_USER, name:process.env.MAIL_NAME},
             to: [{email}],
-            scheduledAt: "Verification code",
+            subject: "Verification code",
             textContent: `Your verification code: ${code}`
 
         })
