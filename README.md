@@ -5,7 +5,7 @@ AI-powered PowerPoint presentation generator with email verification, cloud stor
 ##  Features
 
 - The application uses the OpenAI API to generate JSON data, which is then converted into a presentation.
-- Email registration with OTP verification using Nodemailer.
+- Email registration with OTP verification using Brevo.
 - JWT authentication (access + refresh tokens)
 -  File storage in Cloudflare R2 (AWS S3 compatible)
 -  Image support via Pexels API
@@ -13,11 +13,12 @@ AI-powered PowerPoint presentation generator with email verification, cloud stor
 
 ##  Tech Stack
 
-**Backend:** NestJS, PostgreSQL, Prisma, Nodemailer  
+**Backend:** NestJS, PostgreSQL, Prisma, Brevo  
 **Frontend:** React, TypeScript, Tailwind CSS v4  
 **AI:** OpenAI API  
 **Storage:** Cloudflare R2  
 **Images:** Pexels API  
+**Email:** Brevo API
 
 ##  Getting Started
 
@@ -57,7 +58,7 @@ cp .env.example .env
 | `BUCKET_NAME` | R2 bucket name |
 | `PUBLIC_ACCESS_KEY` | R2 public URL |
 | `MAIL_USER` | Gmail address for sending emails |
-| `MAIL_PASS` | Gmail app password |
+| `BREVO_API` | Brevo API key → [brevo.com](https://brevo.com) |
 | `FRONTEND_URL` | Frontend URL (e.g. http://localhost:5173) |
 | `NODE_ENV` | `development` or `production` |
 
