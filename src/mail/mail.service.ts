@@ -6,7 +6,7 @@ export class MailService {
 
     
     private client = new BrevoClient({
-        apiKey: "YOUR_API_KEY_HERE",
+        apiKey: process.env.BREVO_API!,
     });
     
    async sendCode(email: string, code: string) {
