@@ -4,16 +4,11 @@ import { BrevoClient } from "@getbrevo/brevo";
 @Injectable()
 export class MailService {
 
-    constructor( private client: BrevoClient){
-    client = new BrevoClient({
+    
+    private client = new BrevoClient({
         apiKey: "YOUR_API_KEY_HERE",
     });
     
-    }
-
-  
-    
-
    async sendCode(email: string, code: string) {
 
     try{
