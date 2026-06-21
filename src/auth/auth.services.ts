@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Res, UnauthorizedException } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { TokenService } from "token/token.service";
 import { CreateUserDto } from "user/dto/user.dto";
